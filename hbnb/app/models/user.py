@@ -28,6 +28,8 @@ class User(EntityBaseClass):
 
         self.is_admin = is_admin
 
+    """not implemented yet"""
+
     def create(self):
         pass
 
