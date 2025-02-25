@@ -1,3 +1,4 @@
+import entity_base_class as EntityBaseClass
 
 
 def Place(EntityBaseClass):
