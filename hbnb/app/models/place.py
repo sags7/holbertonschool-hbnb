@@ -31,8 +31,19 @@ def Place(EntityBaseClass):
             raise ValueError("Longitude must be between -180 and 180.")
         self.longitude = longitude
 
-        """!!!!!Owner hasnt been linked to the repository yet"""
+        """!!!!!Need to validate existence of owner in DB"""
         self.owner = owner
+        self.reviews = []
+        self.amenities = []
+
+    def add_review(self, review):
+        self.reviews.append(review)
+
+    def add_amenity(self, amenity):
+        self.amenities.append(amenity)
+
+    def list_amenities(self):
+        return self.amenities
 
     """not implemented yet"""
 

@@ -1,4 +1,4 @@
-from entity_base_class import EntityBaseClass
+from app.models.entity_base_class import EntityBaseClass
 import re
 
 
