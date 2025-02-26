@@ -1,15 +1,15 @@
-import entity_base_class as EntityBaseClass
+from app.models.entity_base_class import EntityBaseClass
 
 
-def Place(EntityBaseClass):
+class Place(EntityBaseClass):
     def __init__(self, title, description, price, latitude, longitude, owner):
         super().__init__()
         title = title.strip()
         description = description.strip()
-        price = price.strip()
-        latitude = latitude.strip()
-        longitude = longitude.strip()
-        owner = owner.strip()
+        price = price
+        latitude = latitude
+        longitude = longitude
+        owner = owner
 
         if len(title) == 0:
             raise ValueError("Title cannot be empty.")
@@ -19,7 +19,7 @@ def Place(EntityBaseClass):
 
         self.description = description
 
-        if len(price) < 0:
+        if price < 0:
             raise ValueError("Price cannot be lower than 0.")
         self.price = price
 

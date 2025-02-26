@@ -1,13 +1,13 @@
-import entity_base_class as EntityBaseClass
+from app.models.entity_base_class import EntityBaseClass
 
 
 class Review(EntityBaseClass):
     def __init__(self, text, rating, place, user):
         super().__init__()
         text = text.strip()
-        rating = rating.strip()
-        place = place.strip()
-        user = user.strip()
+        rating = rating
+        place = place
+        user = user
 
         if len(text) == 0:
             raise ValueError("Text cannot be empty.")

@@ -1,5 +1,4 @@
-import entity_base_class as EntityBaseClass
-
+from app.models.entity_base_class import EntityBaseClass
 
 class Amenity(EntityBaseClass):
     def __init__(self, name):
