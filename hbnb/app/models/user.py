@@ -3,11 +3,11 @@ import re
 
 
 class User(EntityBaseClass):
-    def __init__(self, first_name, last_name, email, is_admin):
+    def __init__(self, first_name, last_name, email, is_admin=False):
         super().__init__()
         self.create(first_name, last_name, email, is_admin)
 
-    def create(self, first_name, last_name, email, is_admin=False):
+    def create(self, first_name, last_name, email, is_admin):
         self.first_name = first_name.strip()
         self.last_name = last_name.strip()
         self.email = email.strip()

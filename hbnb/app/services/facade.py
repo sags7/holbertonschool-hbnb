@@ -10,8 +10,12 @@ class HBnBFacade:
         self.review_repo = InMemoryRepository()
         self.amenity_repo = InMemoryRepository()
 
-        # dummy amenity
-        self.amenity_repo.add(Amenity('Wi-Fi'))
+        # dummy entities
+        self.user_repo.add(User(
+            'Dummy Name',
+            'DummyFamily',
+            'dummy@dummy.com'))
+        self.amenity_repo.add(Amenity('Dummy Amenity'))
 
     """User CRUD operations"""
 
