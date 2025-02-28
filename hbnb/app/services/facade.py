@@ -1,25 +1,31 @@
 from app.persistence.repository import InMemoryRepository
 from app.models.user import User
+from app.models.amenity import Amenity
 
 
 class HBnBFacade:
     def __init__(self):
-        self.user_repo = InMemoryRepository()  # lista de objetos???
+        self.user_repo = InMemoryRepository()
         self.place_repo = InMemoryRepository()
         self.review_repo = InMemoryRepository()
         self.amenity_repo = InMemoryRepository()
 
-    """Placeholder for creating a User"""
-    """instantiates a User object adds it to the user repository and user_repo becomes a list of users"""
+        # dummy amenity
+        self.amenity_repo.add(Amenity('Wi-Fi'))
+
+    """User CRUD operations"""
 
     def create_user(self, user_data):
+        """
+            instantiates a User object adds it to the user repository
+            Returns: User object
+        """
         user = User(**user_data)
         self.user_repo.add(user)
         return user
 
-    """returns a dictionary with all the user data"""
-
     def get_user(self, user_id):
+        """returns a User object from the user repository"""
         return self.user_repo.get(user_id)
 
     def get_user_by_email(self, email):
@@ -33,3 +39,22 @@ class HBnBFacade:
         user.update(**user_data)
 
         return self.user_repo.get(user_id)
+
+    """Amenity CRUD operations"""
+
+    def create_amenity(self, amenity_data):
+        amenity = Amenity(**amenity_data)
+        self.amenity_repo.add(amenity)
+        return amenity
+
+    def get_amenity(self, amenity_id):
+        """Returns the Amenity object in the repo by id"""
+        return self.amenity_repo.get(amenity_id)
+
+    def get_all_amenities(self):
+        return self.amenity_repo.get_all()
+
+    def update_amenity(self, amenity_id, amenity_data):
+        amenity = self.get_amenity(amenity_id)
+        amenity.update(amenity_data['name'])
+        return self.user_repo.get(amenity_id)

@@ -55,11 +55,3 @@ class User(EntityBaseClass):
             self.is_admin = is_admin
 
         self.save()
-
-    """not implemented yet"""
-
-    def read(self):
-        pass
-
-    def delete(self):
-        pass
