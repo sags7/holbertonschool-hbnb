@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_restx import Api
-from app.api.users import api as users_ns
-from app.api.amenities import api as amenities_ns
+from app.api.v1.users import api as users_ns
+from app.api.v1.amenities import api as amenities_ns
 
 
 def create_app():

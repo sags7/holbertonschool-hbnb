@@ -41,7 +41,6 @@ class HBnBFacade:
     def update_user(self, user_id, user_data):
         user = self.user_repo.get(user_id)
         user.update(**user_data)
-
         return self.user_repo.get(user_id)
 
     """Amenity CRUD operations"""
