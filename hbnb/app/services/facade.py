@@ -87,4 +87,6 @@ class HBnBFacade:
         return self.place_repo.get_all()
 
     def update_place(self, place_id, place_data):
-        pass
+        place = self.get_place(place_id)
+        place.update(**place_data)
+        return self.place_repo.get(place_id)
