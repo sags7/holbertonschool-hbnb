@@ -126,4 +126,3 @@ class PlaceResource(Resource):
             'message': 'Place updated successfully'}, 200
 
 
-# PUT /api/v1/places/<place_id>: Update place information.
