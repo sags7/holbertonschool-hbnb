@@ -76,11 +76,11 @@ class PlaceList(Resource):
         return [{
             'id': place.id,
             'title': place.title,
-            'description': place.description,
-            'price': place.price,
+            # 'description': place.description,
+            # 'price': place.price,
             'latitude': place.latitude,
             'longitude': place.longitude,
-            'owner_id': place.owner
+            # 'owner_id': place.owner
         } for place in places_list], 200
 
 
@@ -90,6 +90,7 @@ class PlaceResource(Resource):
     @api.response(404, 'Place not found')
     def get(self, place_id):
         place = facade.get_place(place_id)
+        user = facade.get_user(place.owner)
         if not place:
             return {'error': 'Place not found'}, 404
         return {
@@ -99,7 +100,17 @@ class PlaceResource(Resource):
             'price': place.price,
             'latitude': place.latitude,
             'longitude': place.longitude,
-            'owner_id': place.owner
+            'owner': {
+                'id': user.id,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'email': user.email
+            },
+            'amenities': [{
+                'id': amenity.id,
+                'name': amenity.name
+            } for amenity in place.amenities]
+
         }, 200
 
     @api.expect(place_model)
@@ -112,14 +123,7 @@ class PlaceResource(Resource):
             return {'error': 'Place not found'}, 404
         facade.update_place(place_id, updated_data)
         return {
-            'id': place.id,
-            'title': place.title,
-            'description': place.description,
-            'price': place.price,
-            'latitude': place.latitude,
-            'longitude': place.longitude,
-            'owner_id': place.owner
-        }, 200
+            'message': 'Place updated successfully'}, 200
 
 
 # PUT /api/v1/places/<place_id>: Update place information.

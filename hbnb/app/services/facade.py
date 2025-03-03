@@ -18,6 +18,7 @@ class HBnBFacade:
             'dummy@dummy.com'))
 
         self.amenity_repo.add(Amenity('Dummy Amenity'))
+        self.amenity_repo.add(Amenity('Another Dummy Amenity'))
 
         self.place_repo.add(Place(
             "DummyHome",
@@ -27,6 +28,11 @@ class HBnBFacade:
             "1",
             self.user_repo.get_all()[0].id
         ))
+        place = self.place_repo.get_all()[0]
+        amenity = self.amenity_repo.get_all()[0]
+        place.add_amenity(amenity)
+        amenity = self.amenity_repo.get_all()[1]
+        place.add_amenity(amenity)
 
     """User CRUD operations"""
 

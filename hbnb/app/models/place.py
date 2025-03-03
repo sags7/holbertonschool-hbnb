@@ -45,7 +45,7 @@ class Place(EntityBaseClass):
     def list_amenities(self):
         return self.amenities
 
-    def update(self, title, description, price, latitude, longitude):
+    def update(self, title, description, price):
 
         if title and len(title) > 0 and len(title) <= 100:
             self.title = title
@@ -57,11 +57,5 @@ class Place(EntityBaseClass):
 
         if price and int(price) > 0:
             self.price = price
-
-        if int(latitude) > -90 and int(latitude) < 90:
-            self.latitude = latitude
-
-        if int(longitude) > -180 and int(longitude) < 180:
-            self.longitude = longitude
 
         self.save()
