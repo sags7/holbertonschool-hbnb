@@ -1,15 +1,17 @@
 from app.models.entity_base_class import EntityBaseClass
+from app.services import facade
 
 
 class Place(EntityBaseClass):
-    def __init__(self, title, description, price, latitude, longitude, owner):
+    def __init__(self, title, description, price, latitude, longitude, owner_id):
         super().__init__()
-        title = title.strip()
-        description = description.strip()
-        price = price
-        latitude = latitude
-        longitude = longitude
-        owner = owner
+        self.title = title.strip()
+        self.description = description.strip()
+
+        """user = facade.get_user(owner_id)
+        if not user:
+            raise ValueError("Owner does not exist.")"""
+        self.owner = owner_id
 
         if len(title) == 0:
             raise ValueError("Title cannot be empty.")
@@ -19,20 +21,18 @@ class Place(EntityBaseClass):
 
         self.description = description
 
-        if price < 0:
+        if int(price) < 0:
             raise ValueError("Price cannot be lower than 0.")
         self.price = price
 
-        if latitude < -90 or latitude > 90:
+        if int(latitude) < -90 or int(latitude) > 90:
             raise ValueError("Latitude must be between -90 and 90.")
         self.latitude = latitude
 
-        if longitude < -180 or longitude > 180:
+        if int(longitude) < -180 or int(longitude) > 180:
             raise ValueError("Longitude must be between -180 and 180.")
         self.longitude = longitude
 
-        """!!!!!Need to validate existence of owner in DB"""
-        self.owner = owner
         self.reviews = []
         self.amenities = []
 
@@ -44,17 +44,3 @@ class Place(EntityBaseClass):
 
     def list_amenities(self):
         return self.amenities
-
-    """not implemented yet"""
-
-    def create(self):
-        pass
-
-    def read(self):
-        pass
-
-    def update(self):
-        pass
-
-    def delete(self):
-        pass
