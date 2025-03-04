@@ -10,6 +10,7 @@ amenity_model = api.model('Amenity', {
 
 
 @api.route('/')
+@api.route('', strict_slashes=False)
 class AmenityList(Resource):
     @api.expect(amenity_model)
     @api.response(201, 'Amenity successfully created')

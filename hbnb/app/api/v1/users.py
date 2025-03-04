@@ -11,6 +11,7 @@ user_model = api.model('User', {
 
 
 @api.route('/')
+@api.route('', strict_slashes=False)
 class UserList(Resource):
     @api.expect(user_model, validate=True)
     @api.response(201, 'User successfully created')
@@ -20,6 +21,8 @@ class UserList(Resource):
         """Register a new user"""
         user_data = api.payload
         email = user_data.get('email')
+        if not user_data.get('first_name') or not user_data.get('last_name') or not email:
+            return {'error': 'Invalid input data'}, 400
         if not email:
             return {'message': 'Email is required'}, 400
 

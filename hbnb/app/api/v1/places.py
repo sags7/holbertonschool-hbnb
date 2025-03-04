@@ -28,6 +28,7 @@ place_model = api.model('Place', {
 
 
 @api.route('/')
+@api.route('', strict_slashes=False)
 class PlaceList(Resource):
     @api.expect(place_model)
     @api.response(201, 'Place successfully created')

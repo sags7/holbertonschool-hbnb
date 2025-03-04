@@ -2,7 +2,6 @@ from app.persistence.repository import InMemoryRepository
 from app.models.user import User
 from app.models.amenity import Amenity
 from app.models.place import Place
-from app.models.review import Review
 
 
 class HBnBFacade:
@@ -11,59 +10,6 @@ class HBnBFacade:
         self.place_repo = InMemoryRepository()
         self.review_repo = InMemoryRepository()
         self.amenity_repo = InMemoryRepository()
-
-        # dummy entities
-        dummies = True
-
-        def create_dummies(self):
-            user = User(
-                'Dummy Name',
-                'DummyFamily',
-                'dummy@dummy.com')
-            user.id = 'a'
-            self.user_repo.add(user)
-
-            amenityA = Amenity('Dummy Amenity')
-            amenityA.id = 'a'
-            self.amenity_repo.add(amenityA)
-
-            amenityB = Amenity('Another dummy Amenity')
-            amenityB.id = 'b'
-            self.amenity_repo.add(amenityB)
-
-            place = Place(
-                "DummyHome",
-                "this is dummy",
-                "1",
-                "1",
-                "1",
-                self.user_repo.get_all()[0].id
-            )
-            place.id = 'a'
-            place.amenities.append(self.amenity_repo.get_all()[0])
-            place.amenities.append(self.amenity_repo.get_all()[1])
-            self.place_repo.add(place)
-
-            reviewA = Review(
-                "this is a dummy review text",
-                3,
-                self.place_repo.get_all()[0],
-                self.user_repo.get_all()[0]
-            )
-            reviewA.id = 'a'
-            self.review_repo.add(reviewA)
-
-            reviewB = Review(
-                "Another dummy review text",
-                5,
-                self.place_repo.get_all()[0],
-                self.user_repo.get_all()[0]
-            )
-            reviewB.id = 'b'
-            self.review_repo.add(reviewB)
-
-        if dummies:
-            create_dummies(self)
 
     """User CRUD operations"""
 
@@ -131,6 +77,7 @@ class HBnBFacade:
     """Review CRUD operations"""
 
     def create_review(self, review_data):
+        from app.models.review import Review
         review = Review(**review_data)
         self.review_repo.add(review)
         self.get_place(review_data['place_id']).add_review(review)
