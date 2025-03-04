@@ -126,3 +126,19 @@ class PlaceResource(Resource):
             'message': 'Place updated successfully'}, 200
 
 
+@api.route('/<place_id>/reviews')
+class PlaceReviews(Resource):
+    @api.response(200, 'Place reviews retrieved successfully')
+    @api.response(404, 'Place not found')
+    def get(self, place_id):
+        place = facade.get_place(place_id)
+        if not place:
+            return {'error': 'Place not found'}, 404
+        return [{
+            'id': review.id,
+            'text': review.text,
+            'rating': review.rating,
+            'user_id': review.user,
+            'place_id': review.place
+        } for review in place.reviews], 200
+

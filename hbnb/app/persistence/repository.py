@@ -45,7 +45,7 @@ class InMemoryRepository(Repository):
         return list(self._storage.values())
 
     def update(self, obj_id, data):
-        """Update a User object with obj_id"""
+        """Update a object with obj_id"""
         obj = self.get(obj_id)
         if obj:
             obj.update(data)

@@ -2,6 +2,7 @@ from app.persistence.repository import InMemoryRepository
 from app.models.user import User
 from app.models.amenity import Amenity
 from app.models.place import Place
+from app.models.review import Review
 
 
 class HBnBFacade:
@@ -12,27 +13,57 @@ class HBnBFacade:
         self.amenity_repo = InMemoryRepository()
 
         # dummy entities
-        self.user_repo.add(User(
-            'Dummy Name',
-            'DummyFamily',
-            'dummy@dummy.com'))
+        dummies = True
 
-        self.amenity_repo.add(Amenity('Dummy Amenity'))
-        self.amenity_repo.add(Amenity('Another Dummy Amenity'))
+        def create_dummies(self):
+            user = User(
+                'Dummy Name',
+                'DummyFamily',
+                'dummy@dummy.com')
+            user.id = 'a'
+            self.user_repo.add(user)
 
-        self.place_repo.add(Place(
-            "DummyHome",
-            "this is dummy",
-            "1",
-            "1",
-            "1",
-            self.user_repo.get_all()[0].id
-        ))
-        place = self.place_repo.get_all()[0]
-        amenity = self.amenity_repo.get_all()[0]
-        place.add_amenity(amenity)
-        amenity = self.amenity_repo.get_all()[1]
-        place.add_amenity(amenity)
+            amenityA = Amenity('Dummy Amenity')
+            amenityA.id = 'a'
+            self.amenity_repo.add(amenityA)
+
+            amenityB = Amenity('Another dummy Amenity')
+            amenityB.id = 'b'
+            self.amenity_repo.add(amenityB)
+
+            place = Place(
+                "DummyHome",
+                "this is dummy",
+                "1",
+                "1",
+                "1",
+                self.user_repo.get_all()[0].id
+            )
+            place.id = 'a'
+            place.amenities.append(self.amenity_repo.get_all()[0])
+            place.amenities.append(self.amenity_repo.get_all()[1])
+            self.place_repo.add(place)
+
+            reviewA = Review(
+                "this is a dummy review text",
+                3,
+                self.place_repo.get_all()[0],
+                self.user_repo.get_all()[0]
+            )
+            reviewA.id = 'a'
+            self.review_repo.add(reviewA)
+
+            reviewB = Review(
+                "Another dummy review text",
+                5,
+                self.place_repo.get_all()[0],
+                self.user_repo.get_all()[0]
+            )
+            reviewB.id = 'b'
+            self.review_repo.add(reviewB)
+
+        if dummies:
+            create_dummies(self)
 
     """User CRUD operations"""
 
@@ -96,3 +127,27 @@ class HBnBFacade:
         place = self.get_place(place_id)
         place.update(**place_data)
         return self.place_repo.get(place_id)
+
+    """Review CRUD operations"""
+
+    def create_review(self, review_data):
+        review = Review(**review_data)
+        self.review_repo.add(review)
+        self.get_place(review_data['place_id']).add_review(review)
+        return review
+
+    def get_review(self, review_id):
+        return self.review_repo.get(review_id)
+
+    def get_all_reviews(self):
+        return self.review_repo.get_all()
+
+    def update_review(self, review_id, review_data):
+        review = self.review_repo.get(review_id)
+        review.update(**review_data)
+        return self.review_repo.get(review_id)
+
+    def delete_review(self, review_id):
+        self.review_repo.delete(review_id)
+        if self.review_repo.get(review_id):
+            raise ValueError("Review not deleted")

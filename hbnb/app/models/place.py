@@ -45,6 +45,9 @@ class Place(EntityBaseClass):
     def list_amenities(self):
         return self.amenities
 
+    def list_reviews(self):
+        return self.reviews
+
     def update(self, title, description, price):
 
         if title and len(title) > 0 and len(title) <= 100:

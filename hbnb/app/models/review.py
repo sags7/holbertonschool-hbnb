@@ -2,12 +2,15 @@ from app.models.entity_base_class import EntityBaseClass
 
 
 class Review(EntityBaseClass):
-    def __init__(self, text, rating, place, user):
+    def __init__(self, text, rating, user_id, place_id):
         super().__init__()
-        text = text.strip()
-        rating = rating
-        place = place
-        user = user
+        self.create(text, rating, user_id, place_id,)
+
+    def create(self, text, rating, user_id, place_id):
+        self.text = text.strip()
+        self.rating = rating
+        self.place = place_id
+        self.user = user_id
 
         if len(text) == 0:
             raise ValueError("Text cannot be empty.")
@@ -17,18 +20,18 @@ class Review(EntityBaseClass):
             raise ValueError("Rating must be between 1 and 5.")
         self.rating = rating
 
-        """!!!Place and User havent been linked to the repository yet"""
-        self.place = place
-        self.user = user
+        self.place = place_id
+        self.user = user_id
 
-    def create(self):
-        pass
+        self.save()
 
-    def read(self):
-        pass
-
-    def update(self):
-        pass
-
-    def delete(self):
-        pass
+    def update(self, text, rating):
+        if len(text) == 0:
+            raise ValueError("Text cannot be empty.")
+        if rating < 1 or rating > 5:
+            raise ValueError("Rating must be between 1 and 5.")
+        
+        self.text = text.strip()
+        self.rating = rating
+        
+        self.save()
