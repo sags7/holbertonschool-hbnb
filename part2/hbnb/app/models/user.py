@@ -1,16 +1,18 @@
 from app.models.entity_base_class import EntityBaseClass
+from app import bcrypt
 import re
 
 
 class User(EntityBaseClass):
-    def __init__(self, first_name, last_name, email, is_admin=False):
+    def __init__(self, first_name, last_name, email, password, is_admin=False):
         super().__init__()
         self.first_name = first_name.strip()
         self.last_name = last_name.strip()
         self.email = email.strip()
-        self.create(first_name, last_name, email, is_admin)
+        self.password = password
+        self.create(first_name, last_name, email, password, is_admin)
 
-    def create(self, first_name, last_name, email, is_admin):
+    def create(self, first_name, last_name, email, password, is_admin):
 
         if len(first_name) == 0:
             raise ValueError("First name cannot be empty.")
@@ -30,8 +32,17 @@ class User(EntityBaseClass):
         self.last_name = last_name
         self.email = email
         self.is_admin = is_admin
+        self.hash_password(password)
 
         self.save()
+
+    def hash_password(self, password):
+        """hashes the password using bcrypt, before storing it"""
+        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
+
+    def verify_password(self, password):
+        """verifies the password using bcrypt"""
+        return bcrypt.check_password_hash(self.password, password)
 
     def update(self, first_name, last_name, email, is_admin):
 

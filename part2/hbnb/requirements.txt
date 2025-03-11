@@ -4,3 +4,4 @@ uuid
 datetime
 abc
 re
+flask-bcrypt
