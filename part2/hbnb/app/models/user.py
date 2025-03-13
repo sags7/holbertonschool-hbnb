@@ -1,5 +1,4 @@
 from app.models.entity_base_class import EntityBaseClass
-from app import bcrypt
 import re
 
 
@@ -38,10 +37,12 @@ class User(EntityBaseClass):
 
     def hash_password(self, password):
         """hashes the password using bcrypt, before storing it"""
+        from app import bcrypt
         self.password = bcrypt.generate_password_hash(password).decode('utf-8')
 
     def verify_password(self, password):
         """verifies the password using bcrypt"""
+        from app import bcrypt
         return bcrypt.check_password_hash(self.password, password)
 
     def update(self, first_name, last_name, email, is_admin):

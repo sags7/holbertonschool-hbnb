@@ -17,7 +17,8 @@ def create_dummies():
     user = User(
         'Dummy Name',
         'DummyFamily',
-        'dummy@dummy.com')
+        'dummy@dummy.com',
+        'pwd')
     user.id = 'a'
     facade.user_repo.add(user)
 

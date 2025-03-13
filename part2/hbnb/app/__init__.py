@@ -5,8 +5,10 @@ from app.api.v1.amenities import api as amenities_ns
 from app.api.v1.places import api as places_ns
 from app.api.v1.reviews import api as reviews_ns
 from flask_bcrypt import Bcrypt
+from flask_jwt_extended import JWTManager
 
 bcrypt = Bcrypt()
+jwt = JWTManager()
 
 def create_app(config_class="config.DevelopmentConfig"):
     """Creates and returns and instance of the Flask application"""
@@ -17,6 +19,7 @@ def create_app(config_class="config.DevelopmentConfig"):
               title='HBnB API',
               description='HBnB Application API',
               doc='/api/v1/')
+    jwt.init_app(app)
 
     """
     API namespaces and endpoints will go here

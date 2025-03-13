@@ -5,3 +5,4 @@ datetime
 abc
 re
 flask-bcrypt
+flask-jwt-extended
