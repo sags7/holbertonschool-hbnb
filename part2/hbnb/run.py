@@ -1,4 +1,3 @@
-
 from app import create_app
 from app.models.review import Review
 from app.models.place import Place
