@@ -21,6 +21,14 @@ def create_dummies():
     user.id = 'a'
     facade.user_repo.add(user)
 
+    user = User(
+        'Second Dum Name',
+        'DummyFamily',
+        'dummy2@dummy.com',
+        'pwd')
+    user.id = 'b'
+    facade.user_repo.add(user)
+
     amenityA = Amenity('Dummy Amenity')
     amenityA.id = 'a'
     facade.amenity_repo.add(amenityA)
@@ -35,7 +43,7 @@ def create_dummies():
         "1",
         "1",
         "1",
-        facade.user_repo.get_all()[0].id
+        "a"
     )
     place.id = 'a'
     place.amenities.append(facade.amenity_repo.get_all()[0])

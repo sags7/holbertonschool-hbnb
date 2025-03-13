@@ -45,7 +45,7 @@ class User(EntityBaseClass):
         from app import bcrypt
         return bcrypt.check_password_hash(self.password, password)
 
-    def update(self, first_name, last_name, email, is_admin):
+    def update(self, first_name, last_name, email, password, is_admin=False):
 
         if first_name and len(first_name) > 0 and len(first_name) <= 50:
             self.first_name = first_name
@@ -65,5 +65,7 @@ class User(EntityBaseClass):
 
         if is_admin:
             self.is_admin = is_admin
+
+        self.password = password
 
         self.save()

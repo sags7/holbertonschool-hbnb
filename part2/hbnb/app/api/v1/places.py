@@ -1,4 +1,5 @@
 from flask_restx import Namespace, Resource, fields
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.services import facade
 
 """This is the namespace for the Place API"""
@@ -33,8 +34,12 @@ class PlaceList(Resource):
     @api.expect(place_model)
     @api.response(201, 'Place successfully created')
     @api.response(400, 'Invalid input data')
+    @jwt_required()
     def post(self):
         place_data = api.payload
+        current_user = get_jwt_identity()
+        place_data['owner_id'] = current_user['id']
+
         if not place_data.get('title'):
             return {'message': 'Title is required'}, 400
         if len(place_data.get('title')) > 50:
@@ -55,8 +60,6 @@ class PlaceList(Resource):
         if int(place_data.get('longitude')) < -90 or int(place_data.get('latitude')) > 90:
             return {'message': 'Longitude must be from -90 to 90'}, 400
 
-        if not place_data.get('owner_id'):
-            return {'message': 'Owner ID is required'}, 400
         if not facade.get_user(place_data.get('owner_id')):
             return {'message': 'Owner does not exist'}, 400
 
@@ -81,7 +84,7 @@ class PlaceList(Resource):
             # 'price': place.price,
             'latitude': place.latitude,
             'longitude': place.longitude,
-            # 'owner_id': place.owner
+            'owner_id': place.owner
         } for place in places_list], 200
 
 
@@ -117,11 +120,19 @@ class PlaceResource(Resource):
     @api.expect(place_model)
     @api.response(200, 'Place details updated successfully')
     @api.response(400, 'Invalid input data')
+    @jwt_required()
     def put(self, place_id):
+        current_user = get_jwt_identity()
         place = facade.get_place(place_id)
         updated_data = api.payload
+        updated_data['owner_id'] = current_user['id']
+
         if not place:
             return {'error': 'Place not found'}, 404
+
+        if current_user['id'] != place.owner:
+            return {'error': 'Unauthorized action'}, 403
+
         facade.update_place(place_id, updated_data)
         return {
             'message': 'Place updated successfully'}, 200
@@ -142,4 +153,3 @@ class PlaceReviews(Resource):
             'user_id': review.user,
             'place_id': review.place
         } for review in place.reviews], 200
-

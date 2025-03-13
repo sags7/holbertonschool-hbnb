@@ -56,6 +56,7 @@ class UserList(Resource):
 class UserResource(Resource):
     @api.response(200, 'User details retrieved successfully')
     @api.response(404, 'User not found')
+    @jwt_required()
     def get(self, user_id):
         """Get user details by ID"""
         user = facade.get_user(user_id)
@@ -66,19 +67,34 @@ class UserResource(Resource):
                 'last_name': user.last_name,
                 'email': user.email}, 200
 
+    @jwt_required()
     def put(self, user_id):
         """Updates user details"""
+        current_user = get_jwt_identity()
         user = facade.get_user(user_id)
         updated_data = api.payload
+
+        if 'password' in updated_data or 'email' in updated_data:
+            if user.password != updated_data['password'] or user.email != updated_data['email']:
+                return {'error': 'You cannot modify email or password'}, 400
+            
+        updated_data['password'] = user.password
+        updated_data['email'] = user.email
+
         if not user:
             return {'error': 'User does not exist'}, 404
+
+        if user_id != current_user['id']:
+            return {'error': 'Unauthorized action'}, 403
+
         facade.update_user(user_id, updated_data)
         return {'message': 'User is successfully updated'}, 200
-    
+
+
 @api.route('/protected')
 class ProtectedResource(Resource):
     @jwt_required()
     def get(self):
         """A protected endpoint that requires a valid JWT token"""
         current_user = get_jwt_identity()  # Retrieve the user's identity from the token
-        return {'message': f'Hello, user {current_user["id"]}'}, 200   
+        return {'message': f'Hello, user {current_user["id"]}'}, 200

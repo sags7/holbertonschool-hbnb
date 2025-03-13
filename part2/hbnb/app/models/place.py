@@ -51,7 +51,7 @@ class Place(EntityBaseClass):
     def list_reviews(self):
         return self.reviews
 
-    def update(self, title, description, price):
+    def update(self, title, description, price, latitude, longitude, owner_id):
 
         if title and len(title) > 0 and len(title) <= 100:
             self.title = title
