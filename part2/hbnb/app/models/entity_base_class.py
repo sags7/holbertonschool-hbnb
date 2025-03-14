@@ -10,3 +10,13 @@ class EntityBaseClass(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now())
     updated_at = db.Column(db.DateTime, default=datetime.now(),
                            onupdate=datetime.now())
+
+    def save(self):
+        self.updated_at = datetime.now()
+        db.session.commit()
+
+    def update(self, data):
+        for key, value in data:
+            if hasattr(self, key):
+                setattr(self, key, value)
+        self.save()

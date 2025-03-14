@@ -1,48 +1,70 @@
+from app import db
 from app.models.entity_base_class import EntityBaseClass
+from sqlalchemy.orm import validates
 
 
 class Place(EntityBaseClass):
+    __tablename__ = 'places'
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(500), nullable=False)
+    price = db.Column(db.Integer, nullable=False)
+    latitude = db.Column(db.Integer, nullable=False)
+    longitude = db.Column(db.Integer, nullable=False)
+    owner = db.Column(db.String(36), db.ForeignKey('users.id'), nullable=False)
+    # reviews = db.relationship('Review', backref='place', lazy=True)
+    # amenities = db.relationship('Amenity', secondary='place_amenities', backref='places', lazy=True)
+
     def __init__(self, title, description, price, latitude, longitude, owner_id):
         super().__init__()
-        self.title = title.strip()
-        self.description = description.strip()
-        self.price = price
-        self.latitude = latitude
-        self.longitude = longitude
-        self.owner = owner_id
-        self.create(self.title, self.description, self.price,
-                    self.latitude, self.longitude, self.owner)
+        self.title: str = title.strip()
+        self.description: str = description.strip()
+        self.price: int = price
+        self.latitude: int = latitude
+        self.longitude: int = longitude
+        self.owner: str = owner_id
 
-    def create(self, title, description, price, latitude, longitude, owner_id):
+        from app.models.review import Review
+        from app.models.amenity import Amenity
+        self.reviews: list[Review] = []
+        self.amenities: list[Amenity] = []
+
+    @validates('owner')
+    def validate_owner(self, key, owner_id):
         from app.services import facade
         if not facade.get_user(owner_id):
             raise ValueError("Owner does not exist.")
+        return owner_id
+
+    @validates('title')
+    def validate_title(self, key, title):
         if len(title) == 0:
             raise ValueError("Title cannot be empty.")
         if len(title) > 100:
             raise ValueError("Title must be 100 characters or less.")
+        return title
+
+    @validates('price')
+    def validate_price(self, key, price):
         if int(price) < 0:
             raise ValueError("Price cannot be lower than 0.")
+        return price
+
+    @validates('latitude')
+    def validate_latitude(self, key, latitude):
         if int(latitude) < -90 or int(latitude) > 90:
             raise ValueError("Latitude must be between -90 and 90.")
+        return latitude
+
+    @validates('longitude')
+    def validate_longitude(self, key, longitude):
         if int(longitude) < -180 or int(longitude) > 180:
             raise ValueError("Longitude must be between -180 and 180.")
+        return longitude
 
-        self.owner = owner_id
-        self.title = title
-        self.description = description
-        self.price = price
-        self.latitude = latitude
-        self.longitude = longitude
-        self.reviews = []
-        self.amenities = []
-
-        self.save()
-
-    def add_review(self, review):
+    def add_review(self, review): # may need to update commit() to or save()later
         self.reviews.append(review)
 
-    def add_amenity(self, amenity):
+    def add_amenity(self, amenity): # may need to update commit() to or save()later
         self.amenities.append(amenity)
 
     def list_amenities(self):
@@ -50,18 +72,3 @@ class Place(EntityBaseClass):
 
     def list_reviews(self):
         return self.reviews
-
-    def update(self, title, description, price, latitude, longitude, owner_id):
-
-        if title and len(title) > 0 and len(title) <= 100:
-            self.title = title
-        else:
-            raise ValueError("Title must be 100 characters or less.")
-
-        if description and len(description) > 0:
-            self.description = description
-
-        if price and int(price) > 0:
-            self.price = price
-
-        self.save()
