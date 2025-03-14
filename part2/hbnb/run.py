@@ -14,17 +14,18 @@ def create_dummies():
     from app.services import facade
 
     user = User(
-        'Dummy Name',
-        'DummyFamily',
-        'dummy@dummy.com',
-        'pwd')
+        'Admin',
+        'One',
+        'admin@one.com',
+        'pwd',
+        True)
     user.id = 'a'
     facade.user_repo.add(user)
 
     user = User(
-        'Second Dum Name',
-        'DummyFamily',
-        'dummy2@dummy.com',
+        'Dummy',
+        'Family',
+        'dummy@dummy.com',
         'pwd')
     user.id = 'b'
     facade.user_repo.add(user)

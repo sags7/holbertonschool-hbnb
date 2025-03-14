@@ -125,10 +125,12 @@ class PlaceResource(Resource):
         current_user = get_jwt_identity()
         place = facade.get_place(place_id)
         updated_data = api.payload
-        updated_data['owner_id'] = current_user['id']
 
         if not place:
             return {'error': 'Place not found'}, 404
+        
+        if current_user['is_admin'] is False and place.owner != current_user['id']:
+            return {'error': 'Unauthorized action'}, 403
 
         if current_user['id'] != place.owner:
             return {'error': 'Unauthorized action'}, 403
@@ -136,6 +138,19 @@ class PlaceResource(Resource):
         facade.update_place(place_id, updated_data)
         return {
             'message': 'Place updated successfully'}, 200
+
+    @jwt_required()
+    def delete(self, place_id):
+        current_user = get_jwt_identity()
+        place = facade.get_place(place_id)
+
+        if not place:
+            return {'error': 'Place not found'}, 404
+        if current_user['is_admin'] is True or place.owner == current_user['id']:
+            facade.delete_place(place_id)
+            return {'message': 'Place deleted successfully'}, 200
+        else:
+            return {'error': 'Unauthorized action'}, 403
 
 
 @api.route('/<place_id>/reviews')

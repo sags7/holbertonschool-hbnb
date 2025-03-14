@@ -20,16 +20,22 @@ class UserList(Resource):
     @api.response(201, 'User successfully created')
     @api.response(400, 'Email already registered')
     @api.response(400, 'Invalid input data')
+    @jwt_required()
     def post(self):
         """Register a new user"""
+        current_user = get_jwt_identity()
         user_data = api.payload
         email = user_data.get('email')
+
+        if current_user['is_admin'] is False:
+            return {'error': 'Admin privileges required'}, 403
+
         if not user_data.get('first_name') or not user_data.get('last_name') or not email:
             return {'error': 'Invalid input data'}, 400
+
         if not email:
             return {'message': 'Email is required'}, 400
 
-        """Simulate email uniqueness validation"""
         existing_user = facade.get_user_by_email(user_data['email'])
         if existing_user:
             return {'message': 'Email already registered'}, 400
@@ -74,18 +80,22 @@ class UserResource(Resource):
         user = facade.get_user(user_id)
         updated_data = api.payload
 
-        if 'password' in updated_data or 'email' in updated_data:
-            if user.password != updated_data['password'] or user.email != updated_data['email']:
-                return {'error': 'You cannot modify email or password'}, 400
-            
-        updated_data['password'] = user.password
-        updated_data['email'] = user.email
+        if current_user['is_admin'] is False:
+            return {'error': 'Admin privileges required'}, 403
+
+        if 'password' in updated_data or 'email' in updated_data and current_user['is_admin'] is False:
+            return {'error': 'You cannot modify email or password'}, 400
 
         if not user:
             return {'error': 'User does not exist'}, 404
 
-        if user_id != current_user['id']:
+        if user_id != current_user['id'] and current_user['is_admin'] is False:
             return {'error': 'Unauthorized action'}, 403
+        
+        if not updated_data.get('email'): updated_data['email'] = user.email
+        if not updated_data.get('password'): updated_data['password'] = user.password
+        if not updated_data.get('first_name'): updated_data['first_name'] = user.first_name
+        if not updated_data.get('last_name'): updated_data['last_name'] = user.last_name
 
         facade.update_user(user_id, updated_data)
         return {'message': 'User is successfully updated'}, 200
