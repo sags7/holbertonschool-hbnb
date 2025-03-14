@@ -6,3 +6,5 @@ abc
 re
 flask-bcrypt
 flask-jwt-extended
+sqlalchemy
+flask_sqlalchemy
