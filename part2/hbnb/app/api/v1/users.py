@@ -53,7 +53,7 @@ class UserList(Resource):
                  'first_name': user.first_name,
                  'last_name': user.last_name,
                  'email': user.email,
-                 # 'pass': user.password}
+                 'pass': user.password
                  }
                 for user in users], 200
 
@@ -71,7 +71,9 @@ class UserResource(Resource):
         return {'id': user.id,
                 'first_name': user.first_name,
                 'last_name': user.last_name,
-                'email': user.email}, 200
+                'email': user.email,
+                # 'password': user.password
+                }, 200
 
     @jwt_required()
     def put(self, user_id):
@@ -91,11 +93,15 @@ class UserResource(Resource):
 
         if user_id != current_user['id'] and current_user['is_admin'] is False:
             return {'error': 'Unauthorized action'}, 403
-        
-        if not updated_data.get('email'): updated_data['email'] = user.email
-        if not updated_data.get('password'): updated_data['password'] = user.password
-        if not updated_data.get('first_name'): updated_data['first_name'] = user.first_name
-        if not updated_data.get('last_name'): updated_data['last_name'] = user.last_name
+
+        if not updated_data.get('email'):
+            updated_data['email'] = user.email
+        if not updated_data.get('password'):
+            updated_data['password'] = user.password
+        if not updated_data.get('first_name'):
+            updated_data['first_name'] = user.first_name
+        if not updated_data.get('last_name'):
+            updated_data['last_name'] = user.last_name
 
         facade.update_user(user_id, updated_data)
         return {'message': 'User is successfully updated'}, 200

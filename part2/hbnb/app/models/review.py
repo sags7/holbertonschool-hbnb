@@ -1,5 +1,4 @@
 from app.models.entity_base_class import EntityBaseClass
-import app.services.facade as facade
 
 
 class Review(EntityBaseClass):
@@ -14,6 +13,9 @@ class Review(EntityBaseClass):
             raise ValueError("Text cannot be empty.")
         if rating < 1 or rating > 5:
             raise ValueError("Rating must be between 1 and 5.")
+        
+        import app.services.facade as facade
+        
         if not facade.get_user(user_id):
             raise ValueError("User does not exist.")
         if not facade.get_place(place_id):

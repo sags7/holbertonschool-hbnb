@@ -1,13 +1,13 @@
-from app import create_app
 from app.models.review import Review
 from app.models.place import Place
 from app.models.amenity import Amenity
 from app.models.user import User
+from app import create_app
 
 app = create_app()
 
 # dummy entities for testing
-dummies = True
+dummies = False
 
 
 def create_dummies():
@@ -22,7 +22,7 @@ def create_dummies():
     user.id = 'a'
     facade.user_repo.add(user)
 
-    user = User(
+    """user = User(
         'Dummy',
         'Family',
         'dummy@dummy.com',
@@ -67,7 +67,7 @@ def create_dummies():
         'a'
     )
     reviewB.id = 'b'
-    facade.review_repo.add(reviewB)
+    facade.review_repo.add(reviewB)"""
 
 
 if dummies:

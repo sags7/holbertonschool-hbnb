@@ -1,14 +1,12 @@
-from abc import ABC
 import uuid
-import datetime
+from datetime import datetime
+from app import db
 
 
-class EntityBaseClass(ABC):
-    def __init__(self):
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.datetime.now(datetime.timezone.utc)
-        self.updated_at = ''
-        self.save()
-
-    def save(self):
-        self.updated_at = datetime.datetime.now(datetime.timezone.utc)
+class EntityBaseClass(db.Model):
+    __abstract__ = True  # Ensures SQLAlchemy doesn't create a table for this class
+    id = db.Column(db.String(36), primary_key=True,
+                   default=lambda: str(uuid.uuid4()))
+    created_at = db.Column(db.DateTime, default=datetime.now())
+    updated_at = db.Column(db.DateTime, default=datetime.now(),
+                           onupdate=datetime.now())
