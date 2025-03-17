@@ -1,6 +1,7 @@
 from flask_restx import Namespace, Resource, fields
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.services import facade
+from app.models.amenity import Amenity
 
 api = Namespace('Amenities', description='Amenity operations')
 
@@ -35,7 +36,7 @@ class AmenityList(Resource):
     @api.response(200, 'List of amenities retrieved successfully')
     def get(self):
         """Retrieve a list of all amenities"""
-        all_amenities = facade.get_all_amenities()
+        all_amenities: list[Amenity] = facade.get_all_amenities()
         return [{'id': amenity.id, 'name': amenity.name}
                 for amenity in all_amenities], 200
 

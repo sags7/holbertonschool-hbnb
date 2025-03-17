@@ -15,8 +15,10 @@ class EntityBaseClass(db.Model):
         self.updated_at = datetime.now()
         db.session.commit()
 
-    def update(self, data):
-        for key, value in data:
+    def update(self, data: dict):
+        for key, value in data.items():
+            if key == 'id' or key == 'created_at' or key == 'updated_at':
+                continue
             if hasattr(self, key):
                 setattr(self, key, value)
         self.save()

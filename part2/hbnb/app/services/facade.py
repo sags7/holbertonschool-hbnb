@@ -39,9 +39,9 @@ class HBnBFacade:
     def get_all_users(self):
         return self.user_repo.get_all()
 
-    def update_user(self, user_id, user_data):
-        user = self.user_repo.get(user_id)
-        user.update(**user_data)
+    def update_user(self, user_id, user_data: dict):
+        user: User = self.user_repo.get(user_id)
+        user.update(user_data)
         return self.user_repo.get(user_id)
 
     """Amenity CRUD operations"""
@@ -58,9 +58,9 @@ class HBnBFacade:
     def get_all_amenities(self):
         return self.amenity_repo.get_all()
 
-    def update_amenity(self, amenity_id, amenity_data):
-        amenity = self.get_amenity(amenity_id)
-        amenity.update(amenity_data['name'])
+    def update_amenity(self, amenity_id: str, amenity_data: dict):
+        amenity: Amenity = self.get_amenity(amenity_id)
+        amenity.update(amenity_data)
         return self.user_repo.get(amenity_id)
 
     """Place CRUD operations"""
@@ -71,23 +71,25 @@ class HBnBFacade:
         return place
 
     def get_place(self, place_id):
-        return self.place_repo.get(place_id)
+        """Returns the Place object in the repo by id"""
+        place = self.place_repo.get(place_id)
+        if not place:
+            raise ValueError("Place not found")
+        return place
 
     def get_all_places(self):
         return self.place_repo.get_all()
 
-    def update_place(self, place_id, place_data):
-        place = self.get_place(place_id)
-        place.update(**place_data)
+    def update_place(self, place_id, place_data: dict):
+        place: Place = self.get_place(place_id)
+        place.update(place_data)
         return self.place_repo.get(place_id)
 
     """Review CRUD operations"""
 
     def create_review(self, review_data):
-        from app.models.review import Review
         review = Review(**review_data)
         self.review_repo.add(review)
-        self.get_place(review_data['place_id']).add_review(review)
         return review
 
     def get_review(self, review_id):
@@ -97,8 +99,8 @@ class HBnBFacade:
         return self.review_repo.get_all()
 
     def update_review(self, review_id, review_data):
-        review = self.review_repo.get(review_id)
-        review.update(**review_data)
+        review: Review = self.review_repo.get(review_id)
+        review.update(review_data)
         return self.review_repo.get(review_id)
 
     def delete_review(self, review_id):

@@ -1,6 +1,8 @@
 from flask_restx import Namespace, Resource, fields
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.services import facade
+from app.models.user import User
+from app.models.place import Place
 
 """This is the namespace for the Place API"""
 api = Namespace('Places', description='Place operations')
@@ -80,11 +82,15 @@ class PlaceList(Resource):
         return [{
             'id': place.id,
             'title': place.title,
-            # 'description': place.description,
-            # 'price': place.price,
+            'description': place.description,
+            'price': place.price,
             'latitude': place.latitude,
             'longitude': place.longitude,
-            'owner_id': place.owner
+            'owner_id': place.owner,
+            'amenities': [{
+                'id': amenity.id,
+                'name': amenity.name
+            } for amenity in getattr(place, 'amenities', [])]
         } for place in places_list], 200
 
 
@@ -113,7 +119,7 @@ class PlaceResource(Resource):
             'amenities': [{
                 'id': amenity.id,
                 'name': amenity.name
-            } for amenity in place.amenities]
+            } for amenity in getattr(place, 'amenities', [])]
 
         }, 200
 
@@ -122,13 +128,13 @@ class PlaceResource(Resource):
     @api.response(400, 'Invalid input data')
     @jwt_required()
     def put(self, place_id):
-        current_user = get_jwt_identity()
-        place = facade.get_place(place_id)
-        updated_data = api.payload
+        current_user: User = get_jwt_identity()
+        place: Place = facade.get_place(place_id)
+        updated_data: dict = api.payload
 
         if not place:
             return {'error': 'Place not found'}, 404
-        
+
         if current_user['is_admin'] is False and place.owner != current_user['id']:
             return {'error': 'Unauthorized action'}, 403
 
@@ -136,13 +142,12 @@ class PlaceResource(Resource):
             return {'error': 'Unauthorized action'}, 403
 
         facade.update_place(place_id, updated_data)
-        return {
-            'message': 'Place updated successfully'}, 200
+        return {'message': 'Place updated successfully'}, 200
 
     @jwt_required()
     def delete(self, place_id):
-        current_user = get_jwt_identity()
-        place = facade.get_place(place_id)
+        current_user: User = get_jwt_identity()
+        place: Place = facade.get_place(place_id)
 
         if not place:
             return {'error': 'Place not found'}, 404

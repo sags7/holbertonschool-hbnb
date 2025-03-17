@@ -80,7 +80,7 @@ class UserResource(Resource):
         """Updates user details"""
         current_user = get_jwt_identity()
         user = facade.get_user(user_id)
-        updated_data = api.payload
+        updated_data: dict = api.payload
 
         if current_user['is_admin'] is False:
             return {'error': 'Admin privileges required'}, 403

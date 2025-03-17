@@ -1,6 +1,9 @@
 from flask_restx import Namespace, Resource, fields
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.services import facade
+from app.models.place import Place
+from app.models.review import Review
+from app.models.user import User
 
 
 api = Namespace('Reviews', description='Review operations')
@@ -24,43 +27,37 @@ class ReviewList(Resource):
     @api.response(400, 'Invalid input data')
     @jwt_required()
     def post(self):
-        current_user = get_jwt_identity()
-        new_review = api.payload
-        new_review['user_id'] = current_user['id']
+        current_user_id = get_jwt_identity()
+        new_review_data = api.payload
+        place: Place = facade.get_place(new_review_data['place_id'])
+        new_review_data['user_id'] = current_user_id.get('id')
 
-        if not facade.get_place(new_review.get('place_id')):
+        if not place:
             return {'message': 'Place does not exist'}, 400
 
-        place = facade.get_place(new_review.get('place_id'))
-        for review in place.reviews:
-            if review.user == current_user['id']:
+        for review in getattr(place, 'reviews', []):
+            if review.user_id == current_user_id['id']:
                 return {'message': 'You have already reviewed this place'}, 400
 
-        if place.owner == new_review.get('user_id'):
+        if place.owner == new_review_data.get('user_id'):
             return {'message': 'User cannot review their own place'}, 400
 
-        if not new_review.get('text'):
+        if not new_review_data.get('text'):
             return {'message': 'Text is required'}, 400
 
-        if int(new_review.get('rating')) < 1 or int(new_review.get('rating')) > 5:
+        if int(new_review_data.get('rating')) < 1 or int(new_review_data.get('rating')) > 5:
             return {'message': 'Rating must be between 1 and 5'}, 400
 
-        if not new_review.get('user_id'):
-            return {'message': 'User ID is required'}, 400
-
-        if not facade.get_user(new_review.get('user_id')):
-            return {'message': 'User does not exist'}, 400
-
-        if not new_review.get('place_id'):
+        if not new_review_data.get('place_id'):
             return {'message': 'Place ID is required'}, 400
 
-        created_review = facade.create_review(new_review)
+        created_review = facade.create_review(new_review_data)
         return {
             "id": created_review.id,
             "text": created_review.text,
             "rating": created_review.rating,
-            "user_id": created_review.user,
-            "place_id": created_review.place
+            "user_id": created_review.user_id,
+            "place_id": created_review.place_id
         }, 201
 
     @api.response(200, 'List of reviews retrieved successfully')
@@ -69,7 +66,9 @@ class ReviewList(Resource):
         return [{
             'id': review.id,
             'text': review.text,
-            'rating': review.rating
+            'rating': review.rating,
+            'user_id': review.user_id,
+            'place_id': review.place_id
         } for review in facade.get_all_reviews()], 200
 
 
@@ -85,7 +84,7 @@ class ReviewResource(Resource):
         updated_data = api.payload
 
         review = facade.get_review(review_id)
-        if review.user != current_user['id']:
+        if review.user_id != current_user['id']:
             return {"error": 'Unauthorized action'}, 403
 
         if not updated_data.get('text'):
@@ -107,8 +106,8 @@ class ReviewResource(Resource):
             "id": review.id,
             "text": review.text,
             "rating": review.rating,
-            "user_id": review.user,
-            "place_id": review.place
+            "user_id": review.user_id,
+            "place_id": review.place_id
         }, 200
 
     @api.response(200, 'Review deleted successfully')
