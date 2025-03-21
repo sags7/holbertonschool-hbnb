@@ -94,7 +94,7 @@ class PlaceList(Resource):
             'amenities': [{
                 'id': amenity.id,
                 'name': amenity.name
-            } for amenity in getattr(place, 'amenities', [])]
+            } for amenity in getattr(place, 'amenities', [])],
         } for place in places_list], 200
 
 
@@ -104,7 +104,7 @@ class PlaceResource(Resource):
     @api.response(404, 'Place not found')
     def get(self, place_id):
         place = facade.get_place(place_id)
-        user = facade.get_user(place.owner)
+        user = facade.get_user(place.owner_id)
         if not place:
             return {'error': 'Place not found'}, 404
         return {
@@ -170,10 +170,11 @@ class PlaceReviews(Resource):
         place = facade.get_place(place_id)
         if not place:
             return {'error': 'Place not found'}, 404
+
         return [{
             'id': review.id,
             'text': review.text,
             'rating': review.rating,
-            'user_id': review.user,
-            'place_id': review.place
+            'user_id': review.user_id,
+            'place_id': review.place_id
         } for review in place.reviews], 200
