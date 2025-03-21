@@ -39,7 +39,7 @@ class ReviewList(Resource):
             if review.user_id == current_user_id['id']:
                 return {'message': 'You have already reviewed this place'}, 400
 
-        if place.owner == new_review_data.get('user_id'):
+        if place.owner_id == new_review_data.get('user_id'):
             return {'message': 'User cannot review their own place'}, 400
 
         if not new_review_data.get('text'):

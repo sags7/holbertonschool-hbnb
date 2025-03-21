@@ -12,6 +12,9 @@ class Review(EntityBaseClass):
     place_id = db.Column(db.String(36), db.ForeignKey(
         'places.id'), nullable=False)
 
+    user = db.relationship('User', back_populates='reviews', lazy=True)
+    place = db.relationship('Place', back_populates='reviews', lazy=True)
+
     def __init__(self, text, rating, user_id, place_id):
         super().__init__()
         self.text: str = text

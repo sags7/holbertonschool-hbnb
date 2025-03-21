@@ -18,3 +18,17 @@ class Amenity(EntityBaseClass):
         if len(name) > 50:
             raise ValueError("Name must be 50 characters or less.")
         return name
+
+
+class PlaceAmenity(db.Model):
+    __tablename__ = 'place_amenities'
+    place_id = db.Column(
+        db.String(36),
+        db.ForeignKey('places.id'),
+        primary_key=True
+    )
+    amenity_id = db.Column(
+        db.String(36),
+        db.ForeignKey('amenities.id'),
+        primary_key=True
+    )

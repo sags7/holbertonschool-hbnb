@@ -73,7 +73,11 @@ class PlaceList(Resource):
             'price': new_place.price,
             'latitude': new_place.latitude,
             'longitude': new_place.longitude,
-            'owner_id': new_place.owner
+            'owner_id': new_place.owner_id,
+            'amenities': [{
+                'id': amenity.id,
+                'name': amenity.name
+            } for amenity in getattr(new_place.amenities, 'amenities', [])]
         }, 201
 
     @api.response(200, 'List of places retrieved successfully')
@@ -86,7 +90,7 @@ class PlaceList(Resource):
             'price': place.price,
             'latitude': place.latitude,
             'longitude': place.longitude,
-            'owner_id': place.owner,
+            'owner_id': place.owner_id,
             'amenities': [{
                 'id': amenity.id,
                 'name': amenity.name
@@ -135,10 +139,10 @@ class PlaceResource(Resource):
         if not place:
             return {'error': 'Place not found'}, 404
 
-        if current_user['is_admin'] is False and place.owner != current_user['id']:
+        if current_user['is_admin'] is False and place.owner_id != current_user['id']:
             return {'error': 'Unauthorized action'}, 403
 
-        if current_user['id'] != place.owner:
+        if current_user['id'] != place.owner_id:
             return {'error': 'Unauthorized action'}, 403
 
         facade.update_place(place_id, updated_data)
@@ -151,7 +155,7 @@ class PlaceResource(Resource):
 
         if not place:
             return {'error': 'Place not found'}, 404
-        if current_user['is_admin'] is True or place.owner == current_user['id']:
+        if current_user['is_admin'] is True or place.owner_id == current_user['id']:
             facade.delete_place(place_id)
             return {'message': 'Place deleted successfully'}, 200
         else:

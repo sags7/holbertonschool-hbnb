@@ -10,9 +10,11 @@ class Place(EntityBaseClass):
     price = db.Column(db.Integer, nullable=False)
     latitude = db.Column(db.Integer, nullable=False)
     longitude = db.Column(db.Integer, nullable=False)
-    owner = db.Column(db.String(36), db.ForeignKey('users.id'), nullable=False)
-    # reviews = db.relationship('Review', backref='place', lazy=True)
-    # amenities = db.relationship('Amenity', secondary='place_amenities', backref='places', lazy=True)
+    owner_id = db.Column(db.String(36), db.ForeignKey('users.id'), nullable=False)
+
+    owner = db.relationship('User' , back_populates='places', lazy=True)
+    reviews = db.relationship('Review', back_populates='place', lazy=True)
+    amenities = db.relationship('Amenity', secondary='place_amenities', lazy=True)
 
     def __init__(self, title, description, price, latitude, longitude, owner_id):
         super().__init__()
@@ -21,14 +23,14 @@ class Place(EntityBaseClass):
         self.price: int = price
         self.latitude: int = latitude
         self.longitude: int = longitude
-        self.owner: str = owner_id
+        self.owner_id: str = owner_id
 
         from app.models.review import Review
         from app.models.amenity import Amenity
         self.reviews: list[Review] = []
         self.amenities: list[Amenity] = []
 
-    @validates('owner')
+    @validates('owner_id')
     def validate_owner(self, key, owner_id):
         from app.services import facade
         if not facade.get_user(owner_id):
@@ -61,10 +63,11 @@ class Place(EntityBaseClass):
             raise ValueError("Longitude must be between -180 and 180.")
         return longitude
 
-    def add_review(self, review): # may need to update commit() to or save()later
+    def add_review(self, review): # I may need to update commit() to or save()later
         self.reviews.append(review)
+        self.save()
 
-    def add_amenity(self, amenity): # may need to update commit() to or save()later
+    def add_amenity(self, amenity): # I may need to update commit() to or save()later
         self.amenities.append(amenity)
 
     def list_amenities(self):
