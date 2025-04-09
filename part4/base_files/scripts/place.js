@@ -19,7 +19,28 @@ document.addEventListener('DOMContentLoaded', () => {
         .innerHTML = `<div><p><strong>Price:</strong> $${data.price}</p></div>`;
       document.getElementById('place-details')
         .innerHTML = `<div><p>${data.description}</p></div>`;
-
     })
+    .then(() => {
+      fetch(`http://127.0.0.1:5000/api/v1/places/${placeId}/reviews`)
+        .then(response => {
+          if (!response.ok) throw new Error('Could not fetch reviews');
+          return response.json();
+        })
+        .then((data) => {
+          data.forEach(element => {
+            renderReviewCard(element);
+          });
+        });
+    });
+
+  function renderReviewCard(review) {
+    const reviewCard = document.createElement('div');
+    reviewCard.classList.add('review-card');
+    reviewCard.innerHTML = `
+      <h3><strong>Review:</strong> ${review.rating}</h3>
+      <p>${review.text}</p>
+    `;
+    document.getElementById('reviews').appendChild(reviewCard);
+  };
 });
 
