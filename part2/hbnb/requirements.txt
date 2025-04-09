@@ -2,7 +2,6 @@ flask
 flask-restx
 uuid
 datetime
-abc
 re
 flask-bcrypt
 flask-jwt-extended
