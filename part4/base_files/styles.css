@@ -1,0 +1,131 @@
+/* 
+  This is a SAMPLE File to get you started. Follow the instructions on the project to complete the tasks. 
+  You'll probably need to override some of these styles.
+*/
+
+:root {
+  --header-color: #681a22;
+  --background-color: #ffacac;
+  --text-clear-color: #ffffff;
+  --text-dark-color: #333;
+  --font-family: Arial, sans-serif;
+  --card-background-color: #fcc7c7;
+  --margin-color: #a55656;
+  --debug-margin-color: #000e8960;
+}
+
+* {
+  font-family: Arial, sans-serif;
+  /*border: 1px dashed var(--debug-margin-color); /* ERASE B4 commit Debug dash line*/
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-dark-color);
+  margin: 20px;
+  border: 1px solid var(--margin-color); /* ERASE B4 commit Debug dash line*/
+}
+
+main {
+  padding: 2rem;
+  padding-top: 0rem;
+  justify-content: center;
+}
+
+header {
+  background-color: var(--header-color);
+  padding: 0.25rem;
+}
+
+footer {
+  background-color: var(--header-color);
+  color: var(--text-clear-color);
+  padding: 0.2rem;
+  text-align: center;
+}
+
+nav {
+  color: #fff;
+  padding: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav a {
+  color: var(--text-clear-color);
+  text-decoration: none;
+  margin: 0.5rem;
+}
+
+.logo {
+  display: flex;
+  width: auto;
+  height: auto;
+  justify-content: left;
+}
+
+#filter {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5rem;
+}
+
+#filter h2 {
+  margin-top: 0.2rem;
+}
+
+#places-list ul {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  justify-content: center;
+  padding: 0;
+}
+
+#places-list h3 {
+  text-align: center;
+  margin: 0.5rem;
+}
+
+.place-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 20px;
+  background-color: var(--card-background-color);
+}
+
+#login-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#add-review {
+  justify-content: left;
+  align-items: center;
+}
+
+#add-review h2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#review-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#review-text {
+  width: 80%;
+  height: 100px;
+  margin: 0.5rem;
+}
