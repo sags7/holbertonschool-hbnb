@@ -99,7 +99,7 @@ class ReviewResource(Resource):
     @api.response(404, 'Review not found')
     def get(self, review_id):
         """Get all reviews for a specific place"""
-        review = facade.get_review(review_id)
+        review: Review = facade.get_review(review_id)
         if not review:
             return {'error': 'Review not found'}, 404
         return {
