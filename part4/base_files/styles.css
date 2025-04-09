@@ -129,3 +129,21 @@ nav a {
   height: 100px;
   margin: 0.5rem;
 }
+
+#reviews {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  width: auto;
+}
+
+.review-card {
+  width: 40%;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 20px;
+  background-color: var(--card-background-color);
+  box-sizing: border-box;
+}
