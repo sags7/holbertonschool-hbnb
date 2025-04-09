@@ -2,6 +2,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(window.location.search);
   const placeId = params.get('id');
+  const submitReviewBtn = document.querySelector('review-form button[type="submit"]');
 
   if (!placeId) document.getElementById('place-title').textContent = 'Place not found';
 
@@ -42,5 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.getElementById('reviews').appendChild(reviewCard);
   };
+
+  document.addEventListener('click', (event) => {
+    console.log('SUBMITTING REVIEW');
+  });
 });
 
