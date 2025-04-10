@@ -17,8 +17,18 @@ class EntityBaseClass(db.Model):
 
     def update(self, data: dict):
         for key, value in data.items():
-            if key == 'id' or key == 'created_at' or key == 'updated_at':
+            if key == 'id' or key == 'created_at' or key == 'updated_at' or key == 'owner_id':
                 continue
             if hasattr(self, key):
-                setattr(self, key, value)
+                if key == 'amenities' and isinstance(value, list):
+                    # Convert amenity IDs to Amenity instances
+                    from app.models.amenity import Amenity
+                    amenity_instances = []
+                    for amenity_id in value:
+                        amenity = db.session.get(Amenity, amenity_id)
+                        if amenity:
+                            amenity_instances.append(amenity)
+                    setattr(self, key, amenity_instances)
+                else:
+                    setattr(self, key, value)
         self.save()

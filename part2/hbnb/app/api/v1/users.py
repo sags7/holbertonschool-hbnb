@@ -62,7 +62,7 @@ class UserList(Resource):
 class UserResource(Resource):
     @api.response(200, 'User details retrieved successfully')
     @api.response(404, 'User not found')
-    @jwt_required()
+    #@jwt_required()
     def get(self, user_id):
         """Get user details by ID"""
         user = facade.get_user(user_id)
@@ -72,6 +72,7 @@ class UserResource(Resource):
                 'first_name': user.first_name,
                 'last_name': user.last_name,
                 'email': user.email,
+                'is_admin': user.is_admin,
                 # 'password': user.password
                 }, 200
 
