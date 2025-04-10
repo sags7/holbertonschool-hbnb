@@ -44,8 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('reviews').appendChild(reviewCard);
   };
 
-  document.addEventListener('click', (event) => {
-    console.log('SUBMITTING REVIEW');
-  });
+
 });
 

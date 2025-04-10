@@ -3,10 +3,25 @@
 document.addEventListener('DOMContentLoaded', () => {
   const priceFilter = document.getElementById('price-filter');
   const placesList = document.querySelector('#places-list ul');
-  const maxPrices = [100, 200, 300, 400, 500, 1000];
+  const maxPrices = ["All", 100, 200, 300, 400, 500, 1000];
+  const loginButton = document.getElementById('login-link');
   let selectedMax = maxPrices[maxPrices.length - 1];
   let placesData = [];
 
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) {
+      return parts.pop().split(';').shift();
+    }
+    return null;
+  }
+
+  const token = getCookie('token')
+
+  if (token && loginButton) {
+    loginButton.textContent = 'Logout';
+  }
 
   maxPrices.forEach(price => {
     const option = document.createElement('option');
@@ -32,6 +47,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   priceFilter.addEventListener('change', () => {
     selectedMax = parseInt(priceFilter.value);
+    if (isNaN(selectedMax)) selectedMax = maxPrices[maxPrices.length - 1];
+
     const filtered = placesData.filter(place => place.price <= selectedMax);
     renderPlaces(filtered);
   });
