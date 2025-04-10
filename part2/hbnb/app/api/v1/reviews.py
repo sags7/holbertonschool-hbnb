@@ -37,7 +37,7 @@ class ReviewList(Resource):
 
         for review in getattr(place, 'reviews', []):
             if review.user_id == current_user_id['id']:
-                return {'message': 'You have already reviewed this place'}, 400
+                return {'message': 'You have already reviewed this place'}, 409
 
         if place.owner_id == new_review_data.get('user_id'):
             return {'message': 'User cannot review their own place'}, 400

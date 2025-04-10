@@ -34,6 +34,19 @@
       </section>
       <section id="add-review">
         <h2>Add a Review</h2>
+        <div class="rating-wrapper">
+          <label for="rating">Rating:</label>
+          <input
+            type="range"
+            id="rating"
+            name="rating"
+            min="1"
+            max="5"
+            step="1"
+            value="3"
+          />
+          <div id="star-display">&#9733;&#9733;&#9733;&#9734;&#9734;</div>
+        </div>
         <form id="review-form">
           <label for="review-text"><strong>Review:</strong></label>
           <textarea id="review-text" name="review-text" required></textarea>

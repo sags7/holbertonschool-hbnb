@@ -3,9 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const errorMessage = document.getElementById('error-message');
   const loginButton = document.getElementById('login-link');
 
-  if (loginButton) {
-    document.cookie = "token=; Max-Age=0; path=/;";
-  }
+  if (loginButton) document.cookie = "token=; Max-Age=0; path=/;";
 
 
   if (loginForm) {

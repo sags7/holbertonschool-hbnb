@@ -142,9 +142,6 @@ class PlaceResource(Resource):
         if current_user['is_admin'] is False and place.owner_id != current_user['id']:
             return {'error': 'Unauthorized action'}, 403
 
-        if current_user['id'] != place.owner_id:
-            return {'error': 'Unauthorized action'}, 403
-
         facade.update_place(place_id, updated_data)
         return {'message': 'Place updated successfully'}, 200
 

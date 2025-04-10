@@ -14,7 +14,7 @@ db = SQLAlchemy()
 def create_app(config_class="config.DevelopmentConfig"):
     """Creates and returns and instance of the Flask application"""
     app = Flask(__name__)
-    CORS(app)
+    CORS(app, resources={r"/api/*": {"origins": "*"}})
     app.config.from_object(config_class)
     bcrypt.init_app(app)
     jwt.init_app(app)
