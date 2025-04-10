@@ -1,8 +1,12 @@
+import { getCookie } from './scripts.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(window.location.search);
   const placeId = params.get('id');
-  const submitReviewBtn = document.querySelector('review-form button[type="submit"]');
+  const token = getCookie('token');
+  /*const submitReviewBtn = document.querySelector('review-form button[type="submit"]');*/
+
+  if (!token) document.getElementById('add-review').innerHTML = `<p><a href="./login.html" id="login-link">Login to add a review</a></p>`;
 
   if (!placeId) document.getElementById('place-title').textContent = 'Place not found';
 

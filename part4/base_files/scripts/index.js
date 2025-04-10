@@ -1,3 +1,4 @@
+import { getCookie } from './scripts.js';
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -8,16 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let selectedMax = maxPrices[maxPrices.length - 1];
   let placesData = [];
 
-  function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) {
-      return parts.pop().split(';').shift();
-    }
-    return null;
-  }
-
-  const token = getCookie('token')
+  const token = getCookie('token');
 
   if (token && loginButton) {
     loginButton.textContent = 'Logout';
