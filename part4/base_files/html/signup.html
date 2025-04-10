@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <img class="logo" src="../images/icon.png" alt="" />
+        <div class="nav-links">
+          <a class="home-button" href=" ../index.html" id="home-link"> Home </a>
+          <a class="login-button" href="../html/login.html" id="login-link">
+            Login
+          </a>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <form id="signup-form">
+        <div class="form-group">
+          <h2>Sign-up</h2>
+        </div>
+        <div class="form-group">
+          <label for="first-name">First name:</label>
+          <input type="first-name" id="first-name" name="first-name"  />
+        </div>
+        <div class="form-group">
+          <label for="last-name">Last name:</label>
+          <input type="last-name" id="last-name" name="last-name"  />
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email"  />
+        </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="password"  />
+        </div>
+        <div class="form-group">
+          <label for="devpassword">Developer password:</label>
+          <input type="password" id="dev-password" name="dev-password"  />
+        </div>
+        <button type="submit">Sign-up</button>
+        <p id="error-message" style="color: red"></p>
+      </form>
+    </main>
+    <footer>
+      <p>&copy;SAG 2025 - All rights reserved</p>
+    </footer>
+    <script type="module" src="../scripts/signup.js"></script>
+  </body>
+</html>

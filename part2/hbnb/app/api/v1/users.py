@@ -20,15 +20,15 @@ class UserList(Resource):
     @api.response(201, 'User successfully created')
     @api.response(400, 'Email already registered')
     @api.response(400, 'Invalid input data')
-    @jwt_required()
+    #@jwt_required()
     def post(self):
         """Register a new user"""
-        current_user = get_jwt_identity()
+        #current_user = get_jwt_identity()
         user_data = api.payload
         email = user_data.get('email')
 
-        if current_user['is_admin'] is False:
-            return {'error': 'Admin privileges required'}, 403
+        #if current_user['is_admin'] is False:
+         #   return {'error': 'Admin privileges required'}, 403
 
         if not user_data.get('first_name') or not user_data.get('last_name') or not email:
             return {'error': 'Invalid input data'}, 400

@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
       }
 
-      loginUser(email, password)
+      signUpUser(email, password)
         .then((response) => {
           if (!response.ok) {
             errorMessage.innerHTML = `<p>Login failed: Invalid credentials or server error.</p>`;
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
-function loginUser(email, password) {
+function signUpUser(email, password) {
   return fetch('http://127.0.0.1:5000/api/v1/auth/login', {
     method: 'POST',
     headers: {
