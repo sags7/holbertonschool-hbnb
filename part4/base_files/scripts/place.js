@@ -90,12 +90,13 @@ document.addEventListener('DOMContentLoaded', () => {
           return response.json();
         })
         .then(data => {
-          console.log('Review submitted:', data);
+          console.log('Review submitted:');
           renderReviewCard(data);
         })
         .catch(error => {
           console.error('Error:', error);
         });
+      reviewForm.querySelector('textarea').value = `Review submitted!`;
     }
     else {
       reviewForm.querySelector('textarea').value = `You cannot review your own place`;
