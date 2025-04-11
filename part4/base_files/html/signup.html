@@ -4,21 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
+    <link rel="icon" type="image/png" href="../images/icon.png" />
     <link rel="stylesheet" href="../styles.css" />
   </head>
   <body>
-    <header>
-      <nav>
-        <img class="logo" src="../images/icon.png" alt="" />
-        <div class="nav-links">
-          <a class="home-button" href=" ../index.html" id="home-link"> Home </a>
-          <a class="login-button" href="../html/login.html" id="login-link">
-            Login
-          </a>
-        </div>
-      </nav>
-    </header>
-    <main>
+    <div id="header"></div>
+    <main style="display: none">
       <form id="signup-form">
         <div class="form-group">
           <h2>Sign-up</h2>
@@ -56,9 +47,7 @@
         <p id="error-message" style="color: red"></p>
       </form>
     </main>
-    <footer>
-      <p>&copy;SAG 2025 - All rights reserved</p>
-    </footer>
+    <div id="footer"></div>
     <script type="module" src="../scripts/signup.js"></script>
   </body>
 </html>

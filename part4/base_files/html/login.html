@@ -7,37 +7,25 @@
     <link rel="stylesheet" href="../styles.css" />
   </head>
   <body>
-    <header>
-      <nav>
-        <img class="logo" src="../images/icon.png" alt="" />
-        <div class="nav-links">
-          <a class="home-button" href=" ../index.html" id="home-link"> Home </a>
-          <a class="login-button" href="../html/login.html" id="login-link">
-            Login
-          </a>
-        </div>
-      </nav>
-    </header>
-    <main>
+    <div id="header"></div>
+    <main style="display: none">
       <form id="login-form">
         <div class="form-group">
           <h2>Login</h2>
         </div>
         <div class="form-group">
           <label for="email">Email:</label>
-          <input type="email" id="email" name="email"  />
+          <input type="email" id="email" name="email" />
         </div>
         <div class="form-group">
           <label for="password">Password:</label>
-          <input type="password" id="password" name="password"  />
+          <input type="password" id="password" name="password" />
         </div>
         <button type="submit">Login</button>
         <p id="error-message" style="color: red"></p>
       </form>
     </main>
-    <footer>
-      <p>&copy;SAG 2025 - All rights reserved</p>
-    </footer>
+    <div id="footer"></div>
     <script type="module" src="../scripts/login.js"></script>
   </body>
 </html>

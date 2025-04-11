@@ -1,6 +1,20 @@
 import { getCookie, parseJwt, updateStars } from './scripts.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+  fetch("partials/nav_bar.html")
+    .then((response) => response.text())
+    .then((data) => {
+      document.getElementById("header").innerHTML = data;
+    })
+    .catch((error) => console.error("Error loading header:", error));
+
+  fetch("partials/footer.html")
+    .then((response) => response.text())
+    .then((data) => {
+      document.getElementById("footer").innerHTML = data;
+      document.querySelector('main').style.display = 'block';
+    });
+
   const params = new URLSearchParams(window.location.search);
   const placeId = params.get('id');
   const loginButton = document.getElementById('login-link');

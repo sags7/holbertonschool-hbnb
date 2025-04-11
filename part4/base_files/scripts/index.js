@@ -1,10 +1,26 @@
-import { getCookie } from './scripts.js';
+import { getCookie } from '../scripts/scripts.js';
 
 
 document.addEventListener('DOMContentLoaded', () => {
+  fetch("./partials/nav_bar.html")
+    .then((response) => response.text())
+    .then((data) => {
+      document.getElementById("header").innerHTML = data;
+    })
+    .catch((error) => console.error("Error loading header:", error));
+
+  fetch("./partials/footer.html")
+    .then((response) => response.text())
+    .then((data) => {
+      document.getElementById("footer").innerHTML = data;
+      document.querySelector('main').style.display = 'block';
+    });
+
+
+
   const priceFilter = document.getElementById('price-filter');
   const placesList = document.querySelector('#places-list ul');
-  const maxPrices = ["All", 100, 200, 300, 400, 500, 1000];
+  const maxPrices = ["All", 100000, 200000, 300000, 400000, 500000, 1000000];
   const loginButton = document.getElementById('login-link');
   let selectedMax = maxPrices[maxPrices.length - 1];
   let placesData = [];
@@ -55,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <h3>${place.title}</h3>
         <p><strong>Price:</strong> ${place.price}</p>
         <p>${place.description}</p>
-        <a href="./html/place.html?id=${place.id}" class="details-button">View Details</a>
+        <a href="./place.html?id=${place.id}" class="details-button">View Details</a>
       `;
       placesList.appendChild(li);
     });

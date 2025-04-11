@@ -1,4 +1,18 @@
 document.addEventListener('DOMContentLoaded', function () {
+  fetch("partials/nav_bar.html")
+    .then((response) => response.text())
+    .then((data) => {
+      document.getElementById("header").innerHTML = data;
+    })
+    .catch((error) => console.error("Error loading header:", error));
+
+  fetch("partials/footer.html")
+    .then((response) => response.text())
+    .then((data) => {
+      document.getElementById("footer").innerHTML = data;
+      document.querySelector('main').style.display = 'block';
+    });
+
   const signupForm = document.getElementById('signup-form');
   const errorMessage = document.getElementById('error-message');
   const loginButton = document.getElementById('login-link');
@@ -51,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then((data) => {
           console.log('Signup successful:', data);
-          /*window.location.href = '../html/login.html';*/
+          window.location.href = '../html/login.html';
         })
         .catch((error) => {
           console.error('Signup error:', error.message);

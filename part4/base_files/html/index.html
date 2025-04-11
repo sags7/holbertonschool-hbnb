@@ -4,21 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>List of Places</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" type="image/png" href="../images/icon.png" />
+    <link rel="stylesheet" href="../styles.css" />
   </head>
   <body>
-    <header>
-      <nav>
-        <img class="logo" src="./images/icon.png" alt="" />
-        <div class="nav-links">
-          <a class="home-button" href=" index.html" id="home-link"> Home </a>
-          <a class="login-button" href="html/login.html" id="login-link">
-            Login
-          </a>
-        </div>
-      </nav>
-    </header>
-    <main>
+    <div id="header"></div>
+    <main style="display: none">
       <section id="filter">
         <h2>Available Places</h2>
         <div>
@@ -33,9 +24,7 @@
         <!-- List of places will be populated dynamically -->
       </section>
     </main>
-    <footer>
-      <p>&copy;SAG 2025 - All rights reserved</p>
-    </footer>
-    <script type="module" src="scripts/index.js"></script>
+    <div id="footer"></div>
+    <script type="module" src="../scripts/index.js"></script>
   </body>
 </html>

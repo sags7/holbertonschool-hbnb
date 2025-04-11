@@ -1,4 +1,18 @@
 document.addEventListener('DOMContentLoaded', function () {
+  fetch("partials/nav_bar.html")
+    .then((response) => response.text())
+    .then((data) => {
+      document.getElementById("header").innerHTML = data;
+    })
+    .catch((error) => console.error("Error loading header:", error));
+
+  fetch("partials/footer.html")
+    .then((response) => response.text())
+    .then((data) => {
+      document.getElementById("footer").innerHTML = data;
+      document.querySelector('main').style.display = 'block';
+    });
+
   const loginForm = document.getElementById('login-form');
   const errorMessage = document.getElementById('error-message');
   const loginButton = document.getElementById('login-link');
@@ -28,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then((data) => {
           document.cookie = `token=${data.access_token}; path=/`;
-          window.location.href = '../index.html';
+          window.location.href = '../html/index.html';
         })
         .catch((error) => {
           console.error('Login error:', error);
