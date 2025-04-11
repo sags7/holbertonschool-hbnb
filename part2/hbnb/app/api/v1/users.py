@@ -20,15 +20,15 @@ class UserList(Resource):
     @api.response(201, 'User successfully created')
     @api.response(400, 'Email already registered')
     @api.response(400, 'Invalid input data')
-    #@jwt_required()
+    # @jwt_required()
     def post(self):
         """Register a new user"""
-        #current_user = get_jwt_identity()
+        # current_user = get_jwt_identity()
         user_data = api.payload
         email = user_data.get('email')
 
-        #if current_user['is_admin'] is False:
-         #   return {'error': 'Admin privileges required'}, 403
+        # if current_user['is_admin'] is False:
+        #   return {'error': 'Admin privileges required'}, 403
 
         if not user_data.get('first_name') or not user_data.get('last_name') or not email:
             return {'error': 'Invalid input data'}, 400
@@ -62,7 +62,7 @@ class UserList(Resource):
 class UserResource(Resource):
     @api.response(200, 'User details retrieved successfully')
     @api.response(404, 'User not found')
-    #@jwt_required()
+    # @jwt_required()
     def get(self, user_id):
         """Get user details by ID"""
         user = facade.get_user(user_id)
@@ -106,6 +106,27 @@ class UserResource(Resource):
 
         facade.update_user(user_id, updated_data)
         return {'message': 'User is successfully updated'}, 200
+
+    @api.response(200, 'User successfully deleted')
+    @api.response(404, 'User not found')
+    @jwt_required()
+    def delete(self, user_id):
+        """Delete a user"""
+        authenticatedUser = get_jwt_identity()
+        userIdToDelete = user_id
+        print('---------------------------------------')
+        print(userIdToDelete)
+        if authenticatedUser['is_admin'] is False:
+            return {'error': 'Admin privileges required'}, 403
+
+        if not facade.get_user(userIdToDelete):
+            return {'error': 'User not found'}, 404
+
+        if user_id != authenticatedUser['id'] and authenticatedUser['is_admin'] is False:
+            return {'error': 'Unauthorized action'}, 403
+
+        facade.delete_user(userIdToDelete)
+        return {'message': 'User successfully deleted'}, 200
 
 
 @api.route('/protected')

@@ -13,7 +13,16 @@ document.addEventListener('DOMContentLoaded', function () {
       const lastName = document.getElementById('last-name').value.trim();
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value.trim();
+      const confirmPassword = document.getElementById('confirm-password').value.trim();
       let is_admin = false;
+
+      if (password !== confirmPassword) {
+        console.log("preventing submission")
+        document.getElementById('password').value = '';
+        document.getElementById('confirm-password').value = '';
+        document.getElementById('password-error').innerHTML = `<p>Passwords do not match.</p>`;
+        return
+      }
 
       if (document.getElementById('dev-password').value.trim() === "True") is_admin = true;
 
@@ -42,8 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then((data) => {
           console.log('Signup successful:', data);
-          // Redirect to login or home if successful
-          window.location.href = '../html/login.html';
+          /*window.location.href = '../html/login.html';*/
         })
         .catch((error) => {
           console.error('Signup error:', error.message);

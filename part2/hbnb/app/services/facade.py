@@ -43,6 +43,12 @@ class HBnBFacade:
         user: User = self.user_repo.get(user_id)
         user.update(user_data)
         return self.user_repo.get(user_id)
+    
+    def delete_user(self, user_id):
+        """Deletes a user from the repository"""
+        self.user_repo.delete(user_id)
+        if self.user_repo.get(user_id):
+            raise ValueError("User not deleted")
 
     """Amenity CRUD operations"""
 

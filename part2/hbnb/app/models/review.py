@@ -7,8 +7,11 @@ class Review(EntityBaseClass):
     __tablename__ = 'reviews'
     text = db.Column(db.String(50), nullable=False)
     rating = db.Column(db.Integer, nullable=False)
-    user_id = db.Column(db.String(36), db.ForeignKey(
-        'users.id'), nullable=False)
+    user_id = db.Column(
+        db.String(36),
+        db.ForeignKey('users.id', ondelete='CASCADE'),
+        nullable=False
+    )
     place_id = db.Column(db.String(36), db.ForeignKey(
         'places.id'), nullable=False)
 
@@ -37,6 +40,8 @@ class Review(EntityBaseClass):
     @validates('user_id')
     def validate_user_id(self, key, user_id):
         from app.services import facade
+        if user_id is None:
+            return user_id
         if not facade.get_user(user_id):
             raise ValueError("User does not exist.")
         return user_id
