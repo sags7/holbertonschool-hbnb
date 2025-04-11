@@ -1,6 +1,7 @@
 import { getCookie, parseJwt, updateStars } from './scripts.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Load header and footer
   fetch("partials/nav_bar.html")
     .then((response) => response.text())
     .then((data) => {
@@ -15,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
       document.querySelector('main').style.display = 'block';
     });
 
+  // initialize variables
   const params = new URLSearchParams(window.location.search);
   const placeId = params.get('id');
   const loginButton = document.getElementById('login-link');
@@ -24,15 +26,18 @@ document.addEventListener('DOMContentLoaded', () => {
   let ownerId = null;
   let userId = null;
 
+  // Check if user is logged in
   if (token) {
     userId = parseJwt(token).sub.id ? parseJwt(token).sub.id : null;
   }
-  /*const submitReviewBtn = document.querySelector('review-form button[type="submit"]');*/
 
+  // Handles the login button functionality based on the login status
   if (!token) document.getElementById('add-review').innerHTML = `<h2><a href="./login.html" id="login-link">Login to add a review</a></h2>`;
   if (token && loginButton) loginButton.textContent = 'Logout';
   if (!placeId) document.getElementById('place-title').textContent = 'Place not found';
 
+
+  // Fetch place details and reviews
   fetch(`http://127.0.0.1:5000/api/v1/places/${placeId}`)
     .then(response => {
       if (!response.ok) throw new Error('Could not fetch place details');
@@ -61,7 +66,8 @@ document.addEventListener('DOMContentLoaded', () => {
           });
         });
     });
-
+  
+  // Function to render review cards
   function renderReviewCard(review) {
     const reviewCard = document.createElement('div');
     reviewCard.classList.add('review-card');
@@ -76,6 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
     starDisplay.textContent = updateStars(ratingInput.value);
   });
 
+  // Handle review submission
   document.addEventListener('submit', (event) => {
     event.preventDefault();
     const reviewForm = event.target.closest('form');

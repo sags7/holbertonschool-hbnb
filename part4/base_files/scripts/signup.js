@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
+  // Load header and footer
   fetch("partials/nav_bar.html")
     .then((response) => response.text())
     .then((data) => {
@@ -13,12 +14,15 @@ document.addEventListener('DOMContentLoaded', function () {
       document.querySelector('main').style.display = 'block';
     });
 
+  // Initialize variables
   const signupForm = document.getElementById('signup-form');
   const errorMessage = document.getElementById('error-message');
   const loginButton = document.getElementById('login-link');
 
+  // Check if user is logged and log out if so
   if (loginButton) document.cookie = "token=; Max-Age=0; path=/;";
 
+  // Handle the signup form submission
   if (signupForm) {
     signupForm.addEventListener('submit', function (event) {
       event.preventDefault();
@@ -74,6 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
+// Function to sign up a user via the api
 function signUpUser(firstName, lastName, email, password, isAdmin) {
   return fetch('http://127.0.0.1:5000/api/v1/users', {
     method: 'POST',
