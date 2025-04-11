@@ -17,6 +17,7 @@ def create_dummies():
         is_admin=True
     )
     facade.create_user(usr)
+
     usr = dict(
         first_name='Tornelio',
         last_name='Aramburo',
@@ -25,6 +26,7 @@ def create_dummies():
         is_admin=True
     )
     facade.create_user(usr)
+
     usr = dict(
         first_name='Orion',
         last_name='Zapata',
@@ -33,6 +35,7 @@ def create_dummies():
         is_admin=False
     )
     facade.create_user(usr)
+
     usr = dict(
         first_name='Felipe',
         last_name='Zapata',
@@ -44,8 +47,10 @@ def create_dummies():
 
     amn = dict(name='Wifi')
     facade.create_amenity(amn)
+
     amn = dict(name='Swimming Pool')
     facade.create_amenity(amn)
+
     amn = dict(name='Air Conditioning')
     facade.create_amenity(amn)
 
@@ -55,9 +60,11 @@ def create_dummies():
         price=1000,
         latitude=19,
         longitude=99,
-        owner_id=facade.get_all_users()[0].id
+        owner_id=facade.get_all_users()[0].id,
     )
     facade.create_place(plc)
+    facade.update_place(facade.get_all_places()[0].id, dict(
+        amenities=[facade.get_all_amenities()[0].id, facade.get_all_amenities()[1].id]))
 
     plc = dict(
         title='Casa de la abuela',
@@ -119,6 +126,7 @@ def create_dummies():
         longitude=99,
         owner_id=facade.get_all_users()[3].id
     )
+    facade.create_place(plc)
 
 
 if __name__ == '__main__':

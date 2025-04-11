@@ -114,8 +114,6 @@ class UserResource(Resource):
         """Delete a user"""
         authenticatedUser = get_jwt_identity()
         userIdToDelete = user_id
-        print('---------------------------------------')
-        print(userIdToDelete)
         if authenticatedUser['is_admin'] is False:
             return {'error': 'Admin privileges required'}, 403
 

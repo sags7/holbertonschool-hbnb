@@ -10,11 +10,16 @@ class Place(EntityBaseClass):
     price = db.Column(db.Integer, nullable=False)
     latitude = db.Column(db.Integer, nullable=False)
     longitude = db.Column(db.Integer, nullable=False)
-    owner_id = db.Column(db.String(36), db.ForeignKey('users.id'), nullable=False)
+    owner_id = db.Column(
+        db.String(60),
+        db.ForeignKey('users.id', ondelete='CASCADE'),
+        nullable=False
+    )
 
-    owner = db.relationship('User' , back_populates='places', lazy=True)
+    owner = db.relationship('User', back_populates='places', lazy=True)
     reviews = db.relationship('Review', back_populates='place', lazy=True)
-    amenities = db.relationship('Amenity', secondary='place_amenities', lazy=True)
+    amenities = db.relationship(
+        'Amenity', secondary='place_amenities', lazy=True)
 
     def __init__(self, title, description, price, latitude, longitude, owner_id):
         super().__init__()
@@ -33,6 +38,8 @@ class Place(EntityBaseClass):
     @validates('owner_id')
     def validate_owner(self, key, owner_id):
         from app.services import facade
+        if owner_id is None:
+            return owner_id  # allow None for cascade or manual nulling
         if not facade.get_user(owner_id):
             raise ValueError("Owner does not exist.")
         return owner_id
@@ -63,11 +70,11 @@ class Place(EntityBaseClass):
             raise ValueError("Longitude must be between -180 and 180.")
         return longitude
 
-    def add_review(self, review): # I may need to update commit() to or save()later
+    def add_review(self, review):  # I may need to update commit() to or save()later
         self.reviews.append(review)
         self.save()
 
-    def add_amenity(self, amenity): # I may need to update commit() to or save()later
+    def add_amenity(self, amenity):  # I may need to update commit() to or save()later
         self.amenities.append(amenity)
 
     def list_amenities(self):
