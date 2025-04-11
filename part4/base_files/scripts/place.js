@@ -27,9 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let userId = null;
 
   // Check if user is logged in
-  if (token) {
-    userId = parseJwt(token).sub.id ? parseJwt(token).sub.id : null;
-  }
+  if (token) userId = parseJwt(token).sub.id ? parseJwt(token).sub.id : null;
 
   // Handles the login button functionality based on the login status
   if (!token) document.getElementById('add-review').innerHTML = `<h2><a href="./login.html" id="login-link">Login to add a review</a></h2>`;
@@ -66,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
           });
         });
     });
-  
+
   // Function to render review cards
   function renderReviewCard(review) {
     const reviewCard = document.createElement('div');
@@ -78,6 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('reviews').appendChild(reviewCard);
   };
 
+  // Updates the star display based on the rating input value
   document.addEventListener('input', (event) => {
     starDisplay.textContent = updateStars(ratingInput.value);
   });

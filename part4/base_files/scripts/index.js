@@ -1,6 +1,5 @@
 import { getCookie } from '../scripts/scripts.js';
 
-
 document.addEventListener('DOMContentLoaded', () => {
   // Load header and footer
   fetch("./partials/nav_bar.html")
