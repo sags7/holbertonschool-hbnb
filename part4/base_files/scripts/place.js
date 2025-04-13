@@ -2,14 +2,21 @@ import { getCookie, parseJwt, updateStars } from './scripts.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   // Load header and footer
-  fetch("partials/nav_bar.html")
+  fetch("./partials/nav_bar.html")
     .then((response) => response.text())
     .then((data) => {
-      document.getElementById("header").innerHTML = data;
+      const header = document.getElementById("header");
+      header.innerHTML = data;
+      if (header) {
+        const script = document.createElement("script");
+        script.type = "module";
+        script.src = "../scripts/nav_bar.js";
+        document.body.appendChild(script);
+      }
     })
     .catch((error) => console.error("Error loading header:", error));
 
-  fetch("partials/footer.html")
+  fetch("./partials/footer.html")
     .then((response) => response.text())
     .then((data) => {
       document.getElementById("footer").innerHTML = data;
@@ -104,6 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (!response.ok) {
             return response.json().then(errData => {
               reviewForm.querySelector('textarea').value = errData.message;
+              reviewForm.querySelector('textarea').style.color = `red`;
               throw new Error(errData.message);
             });
           }
@@ -120,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     else {
       reviewForm.querySelector('textarea').value = `You cannot review your own place`;
-      alert('You cannot review your own place!');
+      reviewForm.querySelector('textarea').style.color = `red`;
     }
   });
 
