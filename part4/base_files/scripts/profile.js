@@ -45,13 +45,19 @@ document.addEventListener('DOMContentLoaded', function () {
         <div id="user-name"><p>${data.first_name} ${data.last_name}</p></div>
         <div id="user-email"><p>${data.email}</p></div>
         <div id="logout-button">
-          <button>Logout</button>
+          <a>Logout</a>
+        </div>
+        <div id="add-place-button">
+          <a>Post place</a>
         </div>
         `;
 
-        document.querySelector('#logout-button button').addEventListener('click', function () {
+        document.querySelector('#logout-button a').addEventListener('click', function () {
           document.cookie = "token=; Max-Age=0; path=/;";
           window.location.href = '../html/index.html';
+        });
+        document.querySelector('#add-place-button a').addEventListener('click', function () {
+          window.location.href = '../html/add_place.html';
         });
       });
   }
