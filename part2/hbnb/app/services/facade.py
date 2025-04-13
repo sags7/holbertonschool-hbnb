@@ -90,6 +90,12 @@ class HBnBFacade:
         place: Place = self.get_place(place_id)
         place.update(place_data)
         return self.place_repo.get(place_id)
+    
+    def delete_place(self, place_id):
+        """Deletes a place from the repository"""
+        self.place_repo.delete(place_id)
+        if self.place_repo.get(place_id):
+            raise ValueError("Place not deleted")
 
     """Review CRUD operations"""
 
