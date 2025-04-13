@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function () {
           document.cookie = "token=; Max-Age=0; path=/;";
           window.location.href = '../html/index.html';
         });
-        document.querySelector('#add-place-button a').addEventListener('click', function () {
+        document.querySelector('#post-place-button a').addEventListener('click', function () {
           window.location.href = '../html/add_place.html';
         });
       });

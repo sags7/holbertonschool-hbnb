@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       `;
       document.getElementById('place-details')
-        .innerHTML = `<div> <p>${data.description}</p></div > `;
+        .innerHTML = `<div> <p><strong>Description: </strong>${data.description}</p></div > `;
     })
     .then(() => {
       fetch(`http://127.0.0.1:5000/api/v1/places/${placeId}/reviews`)
