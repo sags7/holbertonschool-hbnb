@@ -54,15 +54,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Function to submit place data through API
   function submitPlace(title, description, price, latitude, longitude, userId) {
-    console.log(JSON.stringify({
-      title: title,
-      description: description,
-      price: parseInt(price),
-      latitude: parseInt(latitude),
-      longitude: parseInt(longitude),
-      owner_id: userId,
-      amenities: []
-    }));
     return fetch('http://127.0.0.1:5000/api/v1/places', {
       method: 'POST',
       headers: {

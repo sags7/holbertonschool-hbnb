@@ -69,14 +69,36 @@ document.addEventListener('DOMContentLoaded', () => {
     places.forEach(place => {
       const li = document.createElement('li');
       li.classList.add('place-card');
+      li.style.display = 'flex';
+      li.style.flexDirection = 'row';
 
       li.innerHTML = `
-        <h3>${place.title}</h3>
-        <p><strong>Price:</strong> ${place.price}</p>
-        <p>${place.description}</p>
-        <a href="./place.html?id=${place.id}" class="details-button">View Details</a>
+        <div class="place-card-text style="display: flex;">  
+          <h3>${place.title}</h3>
+            <p><strong>Price:</strong> ${place.price}</p>
+            <p>${place.description}</p>
+            <strong>Amenities:</strong>
+            <ul class="amenity-list"></ul>
+            <a href="./place.html?id=${place.id}" class="details-button">View Details</a>
+        </div>
+        <div class="place-card-image">
+          <img alt="${place.title}" style="width: 200px; height: 200px;">
+        </div>
       `;
+      place.amenities.forEach(amenity => {
+        const amenityLi = document.createElement('li');
+        amenityLi.textContent = amenity.name;
+        li.querySelector('.amenity-list').appendChild(amenityLi);
+      });
+
       placesList.appendChild(li);
+      li.style.flexDirection = 'column';
+      li.style.alignItems = 'center';
+      li.style.justifyContent = 'center';
+      li.style.width = '200px';
+      const img = li.querySelector('.place-card-image img');
+      img.onerror = () => img.src = '../images/default_image.png';
+      img.src = '../images/default_image.png';
     });
   }
 });

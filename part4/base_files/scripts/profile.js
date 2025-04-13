@@ -40,14 +40,14 @@ document.addEventListener('DOMContentLoaded', function () {
         return response.json();
       })
       .then(data => {
-        console.log(data);
-        document.getElementById('profile-body').innerHTML = `
+        const profileBody = document.getElementById('profile-body');
+        profileBody.innerHTML = `
         <div id="user-name"><p>${data.first_name} ${data.last_name}</p></div>
         <div id="user-email"><p>${data.email}</p></div>
         <div id="logout-button">
           <a>Logout</a>
         </div>
-        <div id="add-place-button">
+        <div id="post-place-button">
           <a>Post place</a>
         </div>
         `;
