@@ -52,6 +52,15 @@ document.addEventListener('DOMContentLoaded', function () {
         </div>
         `;
 
+        if (parseJwt(token).sub.is_admin) profileBody.insertAdjacentHTML('beforeend', `
+          <div class="button" id="post-amenity-button"><a>Post Amenity</a></div>
+          `)
+
+        const amenityButton = document.querySelector('#post-amenity-button');
+        amenityButton?.addEventListener('click', function () {
+          window.location.href = '../html/add_amenity.html';
+        });
+
         document.querySelector('#logout-button a').addEventListener('click', function () {
           document.cookie = "token=; Max-Age=0; path=/;";
           window.location.href = '../html/index.html';

@@ -183,7 +183,8 @@ nav a {
 #signup-button,
 #login-button,
 #logout-button,
-#post-place-button {
+#post-place-button,
+#post-amenity-button {
   text-align: center;
   padding: 1rem;
 }
@@ -191,7 +192,8 @@ nav a {
 #signup-button a,
 #login-button a,
 #logout-button a,
-#post-place-button a {
+#post-place-button a,
+#post-amenity-button a {
   display: inline-block;
   padding: 10px 20px;
   background-color: var(--button-color);
@@ -203,7 +205,8 @@ nav a {
 #signup-button a:hover,
 #login-button a:hover,
 #logout-button a:hover,
-#post-place-button a:hover {
+#post-place-button a:hover,
+#post-amenity-button a:hover {
   background-color: var(--button-hover-color);
 }
 
